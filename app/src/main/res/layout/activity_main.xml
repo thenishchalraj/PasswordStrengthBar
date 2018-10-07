@@ -4,6 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
+
+    <EditText
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/passwordFieldCheck"
+        android:background="@color/colorTransparent"
+        android:inputType="textPassword"
+        android:hint="@string/enter_password"
+        android:textColor="@color/colorPrimaryDark"
+        android:importantForAutofill="no"
+        tools:targetApi="o" />
+
+    <com.android.nishchalraj.passwordstrength.PasswordStrengthBar
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:id="@+id/passwordBarCheck"/>
 
 </LinearLayout>
