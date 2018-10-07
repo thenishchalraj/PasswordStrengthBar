@@ -41,13 +41,6 @@ public class PasswordStrengthBar extends LinearLayout{
 
     }
 
-//    public PasswordStrengthBar(Context context) {
-//        super();
-//        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        view = inflater.inflate(R.layout.password_strength_bar, null);
-//        init();
-//    }
-
     protected void init(Context context, AttributeSet attrs){
         mInflater = LayoutInflater.from(context);
 
@@ -69,6 +62,29 @@ public class PasswordStrengthBar extends LinearLayout{
 
     public int getMin(){
         return 0;
+    }
+
+    //to set the background of the bar
+    public void setBackground(int backgroundColor){
+        plb.setBackgroundColor(backgroundColor);
+    }
+
+    //to set the color of the bar
+    public void setColor(int color1, int color2, int color3, int color4){
+        pb1.setBackgroundColor(color1);
+        pb2.setBackgroundColor(color2);
+        pb3.setBackgroundColor(color3);
+        pb4.setBackgroundColor(color4);
+    }
+
+    //to get the strength of the bar
+    public int getStrength(){
+        return (pb1.getProgress()+pb2.getProgress()+pb3.getProgress()+pb4.getProgress())/4 ;
+    }
+
+    //to set the strength of the bar
+    public void setStrength(int strength){
+
     }
 
 

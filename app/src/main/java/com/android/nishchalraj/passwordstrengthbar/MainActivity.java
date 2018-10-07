@@ -20,5 +20,7 @@ public class MainActivity extends AppCompatActivity {
         passwordStrengthBar = findViewById(R.id.passwordBarCheck);
         passwordField = findViewById(R.id.passwordFieldCheck);
 
+        Toast.makeText(this, "passwordStrengthBar.getStrength()"+passwordStrengthBar.getStrength(), Toast.LENGTH_SHORT).show();
+
     }
 }
