@@ -1,8 +1,13 @@
 package com.android.nishchalraj.passwordstrengthbar;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.nishchalraj.passwordstrength.PasswordStrengthBar;
@@ -20,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
         passwordStrengthBar = findViewById(R.id.passwordBarCheck);
         passwordField = findViewById(R.id.passwordFieldCheck);
 
-        Toast.makeText(this, "passwordStrengthBar.getStrength()"+passwordStrengthBar.getStrength(), Toast.LENGTH_SHORT).show();
-
+        passwordStrengthBar.setNoStrengthColor(Color.BLUE);
+        passwordStrengthBar.setStrengthColor(Color.BLACK,Color.BLUE,Color.GRAY,Color.MAGENTA);
+        passwordStrengthBar.setStrength(10);
     }
 }
