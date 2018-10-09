@@ -72,6 +72,10 @@ public class PasswordStrengthBar extends LinearLayout{
         pb2 = view.findViewById(R.id.pBar2);
         pb3 = view.findViewById(R.id.pBar3);
         pb4 = view.findViewById(R.id.pBar4);
+        setMaxStrength(mMax);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setMinStrength(mMin);
+        }
 
     }
 
@@ -120,18 +124,19 @@ public class PasswordStrengthBar extends LinearLayout{
     public void setMaxStrength(int max){
         this.mMax = max;
 
-        max = max/4;
+        max /= 4;
         pb1.setMax(max);
         pb2.setMax(max);
         pb3.setMax(max);
         pb4.setMax(max);
     }
+
     @SuppressLint("NewApi")
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void setMinStrength(int min){
         this.mMin = min;
 
-        min = min/4;
+        min /=4;
         pb1.setMin(min);
         pb2.setMin(min);
         pb3.setMin(min);
@@ -143,18 +148,51 @@ public class PasswordStrengthBar extends LinearLayout{
         return pb1.getProgress()+pb2.getProgress()+pb3.getProgress()+pb4.getProgress() ;
     }
 
-    //to set the strength of the bar
+    /**
+     * Don't want complex ways to set the strength then use simple calculations
+     * Below method to set the strength of the bar
+     */
     public void setStrength(int strength){
-        pb1.setProgress(strength);
-//        if(strength <= mMin){
-//            pb1.setProgress(mMin);
-//            pb2.setProgress(mMin);
-//            pb3.setProgress(mMin);
-//            pb4.setProgress(mMin);
-//        }
-//        else if(strength >= mMax){
-//            pb1.setProgress(mMax);
-//        }
+        if(strength <= mMin){
+            //set all the progress bar to its minimum value
+            pb1.setProgress(mMin/4);
+            pb2.setProgress(mMin/4);
+            pb3.setProgress(mMin/4);
+            pb4.setProgress(mMin/4);
+        }
+        else if(strength >= mMax){
+            //set all the progress bar to its maximum value
+            pb1.setProgress(mMax/4);
+            pb2.setProgress(mMax/4);
+            pb3.setProgress(mMax/4);
+            pb4.setProgress(mMax/4);
+        }
+        else{
+            //set the progress bar accordingly
+            if(strength-mMax/4 >= mMin/4 ){
+                pb1.setProgress(mMax/4);
+                strength -= (mMax/4);
+                if(strength-mMax/4 >= mMin/4 ){
+                    pb2.setProgress(mMax/4);
+                    strength -= (mMax/4);
+                    if(strength-mMax/4 >= mMin/4 ){
+                        pb3.setProgress(mMax/4);
+                        strength -= (mMax/4);
+                        if(strength-mMax/4 >= mMin/4 ){
+                            pb4.setProgress(mMax/4);
+                        }else{
+                            pb4.setProgress(strength);
+                        }
+                    }else{
+                        pb3.setProgress(strength);
+                    }
+                }else{
+                    pb2.setProgress(strength);
+                }
+            }else{
+                pb1.setProgress(strength);
+            }
+        }
     }
 
 
