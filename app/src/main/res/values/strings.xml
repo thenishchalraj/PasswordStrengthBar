@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">PasswordStrengthBar</string>
     <string name="enter_password">Enter Password</string>
+    <string name="see_password">See Password</string>
+    <string name="hide_password">Hide Password</string>
 </resources>

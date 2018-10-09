@@ -1,21 +1,17 @@
 package com.android.nishchalraj.passwordstrengthbar;
 
 import android.annotation.SuppressLint;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.text.method.PasswordTransformationMethod;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.nishchalraj.passwordstrength.PasswordStrengthBar;
 
@@ -28,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
     int mColor3 = 0;
     int mColor4 = 0;
     TextView check;
+    Button see;
+
+    Boolean visible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         passwordField = findViewById(R.id.passwordFieldCheck);
 
         check = findViewById(R.id.strengthText);
+        see = findViewById(R.id.visibilityButton);
 
         passwordStrengthBar.setStrengthColor(Color.LTGRAY, mColor1, mColor2, mColor3, mColor4);
 
@@ -53,10 +53,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 calculate(s.toString());
+                if (s.length() != 0) {
+                    see.setVisibility(View.VISIBLE);
+                } else {
+                    see.setVisibility(View.GONE);
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {}
+        });
+
+        see.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(visible == true){
+                    passwordField.setTransformationMethod(new PasswordTransformationMethod());
+                    visible = false;
+                    see.setText(R.string.see_password);
+                }
+                else if(visible == false){
+                    passwordField.setTransformationMethod(null);
+                    visible = true;
+                    see.setText(R.string.hide_password);
+                }
+            }
         });
 
     }
@@ -65,40 +86,38 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("ResourceAsColor")
     protected void calculate(String data) {
 
-        String temp = data;
-
         int length = 0, uppercase = 0, lowercase = 0, digits = 0, symbols = 0, bonus = 0, requirements = 0;
 
         int lettersonly = 0, numbersonly = 0, cuc = 0, clc = 0;
 
-        length = temp.length();
-        for (int i = 0; i < temp.length(); i++) {
-            if (Character.isUpperCase(temp.charAt(i)))
+        length = data.length();
+        for (int i = 0; i < data.length(); i++) {
+            if (Character.isUpperCase(data.charAt(i)))
                 uppercase++;
-            else if (Character.isLowerCase(temp.charAt(i)))
+            else if (Character.isLowerCase(data.charAt(i)))
                 lowercase++;
-            else if (Character.isDigit(temp.charAt(i)))
+            else if (Character.isDigit(data.charAt(i)))
                 digits++;
 
             symbols = length - uppercase - lowercase - digits;
 
         }
 
-        for (int j = 1; j < temp.length() - 1; j++) {
+        for (int j = 1; j < data.length() - 1; j++) {
 
-            if (Character.isDigit(temp.charAt(j)))
+            if (Character.isDigit(data.charAt(j)))
                 bonus++;
 
         }
 
-        for (int k = 0; k < temp.length(); k++) {
+        for (int k = 0; k < data.length(); k++) {
 
-            if (Character.isUpperCase(temp.charAt(k))) {
+            if (Character.isUpperCase(data.charAt(k))) {
                 k++;
 
-                if (k < temp.length()) {
+                if (k < data.length()) {
 
-                    if (Character.isUpperCase(temp.charAt(k))) {
+                    if (Character.isUpperCase(data.charAt(k))) {
 
                         cuc++;
                         k--;
@@ -111,14 +130,14 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        for (int l = 0; l < temp.length(); l++) {
+        for (int l = 0; l < data.length(); l++) {
 
-            if (Character.isLowerCase(temp.charAt(l))) {
+            if (Character.isLowerCase(data.charAt(l))) {
                 l++;
 
-                if (l < temp.length()) {
+                if (l < data.length()) {
 
-                    if (Character.isLowerCase(temp.charAt(l))) {
+                    if (Character.isLowerCase(data.charAt(l))) {
 
                         clc++;
                         l--;

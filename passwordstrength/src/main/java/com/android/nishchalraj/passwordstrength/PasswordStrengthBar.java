@@ -2,10 +2,7 @@ package com.android.nishchalraj.passwordstrength;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -20,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 /**
- * Created by nishchalraj on 06.10.2018.
+ * Created by nishchalraj on 10.10.2018.
  */
 
 public class PasswordStrengthBar extends LinearLayout{
@@ -38,9 +35,9 @@ public class PasswordStrengthBar extends LinearLayout{
     private int mMax = 100;
     private int mMin = 0;
     private int mNoStrengthColor = Color.LTGRAY;
-    private int mStrengthColor1 = Color.DKGRAY;
-    private int mStrengthColor2 = Color.DKGRAY;
-    private int mStrengthColor3 = Color.DKGRAY;
+    private int mStrengthColor1 = Color.RED;
+    private int mStrengthColor2 = Color.YELLOW;
+    private int mStrengthColor3 = Color.GREEN;
     private int mStrengthColor4 = Color.DKGRAY;
 
     public PasswordStrengthBar(Context context) {
@@ -114,6 +111,7 @@ public class PasswordStrengthBar extends LinearLayout{
 
     }
 
+
     /**
      * Implement the below two methods to get the maximum
      * and minimum value to which the password strength can be calculated
@@ -124,6 +122,7 @@ public class PasswordStrengthBar extends LinearLayout{
     public int getMinStrength(){
         return mMin;
     }
+
 
     /**
      * implement the below two methods to set the maximum
@@ -152,12 +151,14 @@ public class PasswordStrengthBar extends LinearLayout{
         pb4.setMin(min);
     }
 
+
     /**
      * implement the below method to get the strength of the bar
      */
     public int getStrength(){
         return pb1.getProgress()+pb2.getProgress()+pb3.getProgress()+pb4.getProgress() ;
     }
+
 
     /**
      * Don't want complex ways to set the strength then use simple calculations
@@ -217,6 +218,4 @@ public class PasswordStrengthBar extends LinearLayout{
             }
         }
     }
-
-
 }
