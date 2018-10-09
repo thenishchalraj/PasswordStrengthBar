@@ -1,5 +1,6 @@
 package com.android.nishchalraj.passwordstrength;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -10,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ScaleDrawable;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -73,62 +75,86 @@ public class PasswordStrengthBar extends LinearLayout{
 
     }
 
-//    android:progressBackgroundTint="#ffffff"
-//    android:progressTint="#000"
-
     //to set the password strength to default chosen color
-    public void setNoStrengthColor(int noStrengthColor){
+    public void setStrengthColor(int noStrengthColor, int color1, int color2, int color3, int color4){
+
         this.mNoStrengthColor = noStrengthColor;
-
-        Drawable bckgrndDr = new ColorDrawable(Color.RED);
-        Drawable secProgressDr = new ColorDrawable(Color.DKGRAY);
-        Drawable progressDr = new ScaleDrawable(new ColorDrawable(Color.LTGRAY), Gravity.LEFT, 1, -1);
-        LayerDrawable resultDr = new LayerDrawable(new Drawable[] { bckgrndDr, secProgressDr, progressDr });
-        pb1.setProgressDrawable(resultDr);
-
-        pb2.getProgressDrawable().setColorFilter(mNoStrengthColor,PorterDuff.Mode.SRC_IN);
-        pb3.getProgressDrawable().setColorFilter(mNoStrengthColor,PorterDuff.Mode.SRC_IN);
-        pb4.getProgressDrawable().setColorFilter(mNoStrengthColor,PorterDuff.Mode.SRC_IN);
-    }
-
-    //to get the maximum and minimum value to which the password strength can be calculated
-    public int getMax(){
-        return mMax;
-    }
-    public int getMin(){
-        return mMin;
-    }
-
-    //to set the maximum and minimum value to which the password strength can be calculated
-    public void setMax(int max){
-        this.mMax = max;
-    }
-    public void setMin(int min){
-        this.mMin = min;
-    }
-
-    //to set the background of the bar
-    public void setBackground(int backgroundColor){
-        plb.setBackgroundColor(backgroundColor);
-    }
-
-    //to set the color of the bar
-    public void setStrengthColor(int color1, int color2, int color3, int color4){
         this.mStrengthColor1 = color1;
         this.mStrengthColor2 = color2;
         this.mStrengthColor3 = color3;
         this.mStrengthColor4 = color4;
-        //TODO: set color according to the strength
+
+        Drawable bckgrndDr = new ColorDrawable(noStrengthColor);
+
+        //color layers for password bar 1
+        Drawable progressDr1 = new ScaleDrawable(new ColorDrawable(color1), Gravity.LEFT, 1, -1);
+        LayerDrawable resultDr1 = new LayerDrawable(new Drawable[] { bckgrndDr, progressDr1 });
+        pb1.setProgressDrawable(resultDr1);
+
+        //color layers for password bar 2
+        Drawable progressDr2 = new ScaleDrawable(new ColorDrawable(color2), Gravity.LEFT, 1, -1);
+        LayerDrawable resultDr2 = new LayerDrawable(new Drawable[] { bckgrndDr, progressDr2 });
+        pb2.setProgressDrawable(resultDr2);
+
+        //color layers for password bar 3
+        Drawable progressDr3 = new ScaleDrawable(new ColorDrawable(color3), Gravity.LEFT, 1, -1);
+        LayerDrawable resultDr3 = new LayerDrawable(new Drawable[] { bckgrndDr, progressDr3 });
+        pb3.setProgressDrawable(resultDr3);
+
+        //color layers for password bar 4
+        Drawable progressDr4 = new ScaleDrawable(new ColorDrawable(color4), Gravity.LEFT, 1, -1);
+        LayerDrawable resultDr4 = new LayerDrawable(new Drawable[] { bckgrndDr, progressDr4 });
+        pb4.setProgressDrawable(resultDr4);
+
+    }
+
+    //to get the maximum and minimum value to which the password strength can be calculated
+    public int getMaxStrength(){
+        return mMax;
+    }
+    public int getMinStrength(){
+        return mMin;
+    }
+
+    //to set the maximum and minimum value to which the password strength can be calculated
+    public void setMaxStrength(int max){
+        this.mMax = max;
+
+        max = max/4;
+        pb1.setMax(max);
+        pb2.setMax(max);
+        pb3.setMax(max);
+        pb4.setMax(max);
+    }
+    @SuppressLint("NewApi")
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void setMinStrength(int min){
+        this.mMin = min;
+
+        min = min/4;
+        pb1.setMin(min);
+        pb2.setMin(min);
+        pb3.setMin(min);
+        pb4.setMin(min);
     }
 
     //to get the strength of the bar
     public int getStrength(){
-        return (pb1.getProgress()+pb2.getProgress()+pb3.getProgress()+pb4.getProgress())/4 ;
+        return pb1.getProgress()+pb2.getProgress()+pb3.getProgress()+pb4.getProgress() ;
     }
 
     //to set the strength of the bar
     public void setStrength(int strength){
         pb1.setProgress(strength);
+//        if(strength <= mMin){
+//            pb1.setProgress(mMin);
+//            pb2.setProgress(mMin);
+//            pb3.setProgress(mMin);
+//            pb4.setProgress(mMin);
+//        }
+//        else if(strength >= mMax){
+//            pb1.setProgress(mMax);
+//        }
     }
 
 
