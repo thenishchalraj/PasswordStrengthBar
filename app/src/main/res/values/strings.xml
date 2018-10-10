@@ -3,4 +3,8 @@
     <string name="enter_password">Enter Password</string>
     <string name="see_password">See Password</string>
     <string name="hide_password">Hide Password</string>
+    <string name="bad">BAD</string>
+    <string name="average">AVERAGE</string>
+    <string name="good">GOOD</string>
+    <string name="best">BEST</string>
 </resources>

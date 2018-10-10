@@ -52,11 +52,10 @@ public class PasswordStrengthBar extends LinearLayout{
 
     public PasswordStrengthBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
         init(context);
     }
 
-    //initiate views
+    /**initiate views*/
     protected void init(Context context){
         mInflater = LayoutInflater.from(context);
 
@@ -87,26 +86,26 @@ public class PasswordStrengthBar extends LinearLayout{
         this.mStrengthColor3 = color3;
         this.mStrengthColor4 = color4;
 
-        Drawable bckgrndDr = new ColorDrawable(noStrengthColor);
+        Drawable backgroundDr = new ColorDrawable(noStrengthColor);
 
         //color layers for password bar 1
         Drawable progressDr1 = new ScaleDrawable(new ColorDrawable(color1), Gravity.LEFT, 1, -1);
-        LayerDrawable resultDr1 = new LayerDrawable(new Drawable[] { bckgrndDr, progressDr1 });
+        LayerDrawable resultDr1 = new LayerDrawable(new Drawable[] { backgroundDr, progressDr1 });
         pb1.setProgressDrawable(resultDr1);
 
         //color layers for password bar 2
         Drawable progressDr2 = new ScaleDrawable(new ColorDrawable(color2), Gravity.LEFT, 1, -1);
-        LayerDrawable resultDr2 = new LayerDrawable(new Drawable[] { bckgrndDr, progressDr2 });
+        LayerDrawable resultDr2 = new LayerDrawable(new Drawable[] { backgroundDr, progressDr2 });
         pb2.setProgressDrawable(resultDr2);
 
         //color layers for password bar 3
         Drawable progressDr3 = new ScaleDrawable(new ColorDrawable(color3), Gravity.LEFT, 1, -1);
-        LayerDrawable resultDr3 = new LayerDrawable(new Drawable[] { bckgrndDr, progressDr3 });
+        LayerDrawable resultDr3 = new LayerDrawable(new Drawable[] { backgroundDr, progressDr3 });
         pb3.setProgressDrawable(resultDr3);
 
         //color layers for password bar 4
         Drawable progressDr4 = new ScaleDrawable(new ColorDrawable(color4), Gravity.LEFT, 1, -1);
-        LayerDrawable resultDr4 = new LayerDrawable(new Drawable[] { bckgrndDr, progressDr4 });
+        LayerDrawable resultDr4 = new LayerDrawable(new Drawable[] { backgroundDr, progressDr4 });
         pb4.setProgressDrawable(resultDr4);
 
     }

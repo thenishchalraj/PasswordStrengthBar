@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calculate(s.toString());
+                calculation(s.toString());
                 if (s.length() != 0) {
                     see.setVisibility(View.VISIBLE);
                 } else {
@@ -84,11 +84,11 @@ public class MainActivity extends AppCompatActivity {
 
     //the below method calculates the strength of the password and this can be different for different applications
     @SuppressLint("ResourceAsColor")
-    protected void calculate(String data) {
+    protected void calculation(String data) {
 
         int length = 0, uppercase = 0, lowercase = 0, digits = 0, symbols = 0, bonus = 0, requirements = 0;
 
-        int lettersonly = 0, numbersonly = 0, cuc = 0, clc = 0;
+        int lettersOnly = 0, numbersOnly = 0, cuc = 0, clc = 0;
 
         length = data.length();
         for (int i = 0; i < data.length(); i++) {
@@ -175,29 +175,29 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (digits == 0 && symbols == 0) {
-            lettersonly = 1;
+            lettersOnly = 1;
         }
 
         if (lowercase == 0 && uppercase == 0 && symbols == 0) {
-            numbersonly = 1;
+            numbersOnly = 1;
         }
 
         int Total = (length * 4) + ((length - uppercase) * 2)
                 + ((length - lowercase) * 2) + (digits * 4) + (symbols * 6)
-                + (bonus * 2) + (requirements * 2) - (lettersonly * length * 2)
-                - (numbersonly * length * 3) - (cuc * 2) - (clc * 2);
+                + (bonus * 2) + (requirements * 2) - (lettersOnly * length * 2)
+                - (numbersOnly * length * 3) - (cuc * 2) - (clc * 2);
 
         if (Total >= 1 && Total <= 50) {
-            check.setText("BAD");
+            check.setText(R.string.bad);
             passwordStrengthBar.setStrength(Total/2);
         } else if (Total >= 51 && Total <= 70) {
-            check.setText("AVERAGE");
+            check.setText(R.string.average);
             passwordStrengthBar.setStrength((Total*5)/7);
         } else if (Total >= 71 && Total <= 80) {
-            check.setText("GOOD");
+            check.setText(R.string.good);
             passwordStrengthBar.setStrength((Total*7)/8);
         } else if (Total >= 81) {
-            check.setText("BEST");
+            check.setText(R.string.best);
             passwordStrengthBar.setStrength(Total);
         } else {
             check.setText("");
