@@ -55,6 +55,7 @@
 ```
 ### TODO
 * More features related to Password and Strength bars' functionality.
+* Vertical password strength bars.
 
 ## If this library helps you in anyway, show your love :heart: by putting a :star: on this project :v:
 
