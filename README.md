@@ -59,5 +59,9 @@
 
 ## If this library helps you in anyway, show your love :heart: by putting a :star: on this project :v:
 
+
+## To learn how to write your own Android Library
+Follow this medium link and start today: https://medium.com/mindorks/want-to-write-your-first-android-library-7bba6ca4e0c5
+
 ### Contributing to PasswordStrengthBar
 Fork and make your changes/improvements. All pull requests are welcome.
