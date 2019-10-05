@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         see.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(visible == true){
+                if(!visible){
                     passwordField.setTransformationMethod(new PasswordTransformationMethod());
                     visible = false;
                     see.setText(R.string.see_password);
