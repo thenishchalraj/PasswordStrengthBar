@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.nishchalraj.passwordstrength.PasswordStrengthBar;
 
@@ -26,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     TextView check;
     Button see;
 
-    Boolean visible = false;
+    Boolean visible = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {}
         });
 
-        see.setOnClickListener(new View.OnClickListener() {
+        /*see.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(visible == true){
@@ -77,6 +79,46 @@ public class MainActivity extends AppCompatActivity {
                     visible = true;
                     see.setText(R.string.hide_password);
                 }
+                passwordField.setSelection(passwordField.getText().length());//this helps cursor to be at last position even if password is seen by user
+            }
+        });*/
+        see.setOnClickListener(new View.OnClickListener() {//this hole onclick func make password visible for 1.5second only
+            @Override
+            public void onClick(View v) {
+
+                    passwordField.setTransformationMethod(null);
+                    visible = true;
+                    see.setText(R.string.hide_password);
+                    passwordField.setSelection(passwordField.getText().length());//this helps cursor to be at last position even if password is seen by user
+                    //Toast.makeText(getApplicationContext(), "hide pass", Toast.LENGTH_SHORT).show();
+                    Log.d("TAG","done hiding ");
+
+                Thread stop = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1500);
+                            Log.d("TAG","2");
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                        passwordField.setTransformationMethod(new AsteriskPasswordTransformationMethod());
+                                        visible = false;
+                                        see.setText(R.string.see_password);
+                                        passwordField.setSelection(passwordField.getText().length());//this helps cursor to be at last position even if password is seen by user
+                                        //Toast.makeText(getApplicationContext(), "see pass", Toast.LENGTH_SHORT).show();
+                                        Log.d("TAG","done seeing ");
+
+                                }
+                            });
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+                stop.start();
             }
         });
 
@@ -206,3 +248,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
+class AsteriskPasswordTransformationMethod extends PasswordTransformationMethod {//this class helps to display password in astrisk(*) format
+    @Override
+    public CharSequence getTransformation(CharSequence source, View view) {
+        return new PasswordCharSequence(source);
+    }
+
+    private class PasswordCharSequence implements CharSequence {
+        private CharSequence mSource;
+        public PasswordCharSequence(CharSequence source) {
+            mSource = source;
+        }
+        public char charAt(int index) {
+            return '*';
+        }
+        public int length() {
+            return mSource.length();
+        }
+        public CharSequence subSequence(int start, int end) {
+            return mSource.subSequence(start, end);
+        }
+    }
+};
