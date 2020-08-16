@@ -6,3 +6,9 @@
 /build
 /captures
 .externalNativeBuild
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/caches
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
