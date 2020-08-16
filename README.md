@@ -1,4 +1,5 @@
-# PasswordStrengthBar - See the strength of your password through separated strength bars
+# PasswordStrengthBar
+### See the strength of your password through separated strength bars
 
 ## Preview of PasswordStrengthBar
 <img src="https://github.com/nishchalraj/PasswordStrengthBar/blob/master/screenshots/0.png" height="300em" />&nbsp;<img src="https://github.com/nishchalraj/PasswordStrengthBar/blob/master/screenshots/1.png" height="300em" />&nbsp;<img src="https://github.com/nishchalraj/PasswordStrengthBar/blob/master/screenshots/2.png" height="300em" />&nbsp;<img src="https://github.com/nishchalraj/PasswordStrengthBar/blob/master/screenshots/3.png" height="300em" />&nbsp;<img src="https://github.com/nishchalraj/PasswordStrengthBar/blob/master/screenshots/4.png" height="300em" />
@@ -24,7 +25,9 @@
 2. Add this in your app's build.gradle
 
 ```groovy
-	 implementation 'com.github.nishchalraj:PasswordStrengthBar:0.0.3'
+	dependencies {
+	        implementation 'com.github.thenishchalraj:PasswordStrengthBar:Tag'
+	}
 ```
 3. To use this in XML File, use 
 
