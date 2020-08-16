@@ -66,59 +66,40 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {}
         });
 
-        /*see.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(visible == true){
-                    passwordField.setTransformationMethod(new PasswordTransformationMethod());
-                    visible = false;
-                    see.setText(R.string.see_password);
-                }
-                else if(visible == false){
-                    passwordField.setTransformationMethod(null);
-                    visible = true;
-                    see.setText(R.string.hide_password);
-                }
-                passwordField.setSelection(passwordField.getText().length());//this helps cursor to be at last position even if password is seen by user
-            }
-        });*/
         see.setOnClickListener(new View.OnClickListener() {//this hole onclick func make password visible for 1.5second only
             @Override
             public void onClick(View v) {
 
-                    passwordField.setTransformationMethod(null);
-                    visible = true;
-                    see.setText(R.string.hide_password);
-                    passwordField.setSelection(passwordField.getText().length());//this helps cursor to be at last position even if password is seen by user
-                    //Toast.makeText(getApplicationContext(), "hide pass", Toast.LENGTH_SHORT).show();
-                    Log.d("TAG","done hiding ");
+            passwordField.setTransformationMethod(null);
+            visible = true;
+            see.setText(R.string.hide_password);
+            passwordField.setSelection(passwordField.getText().length());//this helps cursor to be at last position even if password is seen by user
+            Log.d("TAG","done hiding ");
 
-                Thread stop = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(1500);
-                            Log.d("TAG","2");
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
+            Thread stop = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                try {
+                    Thread.sleep(1500);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
 
-                                        passwordField.setTransformationMethod(new AsteriskPasswordTransformationMethod());
-                                        visible = false;
-                                        see.setText(R.string.see_password);
-                                        passwordField.setSelection(passwordField.getText().length());//this helps cursor to be at last position even if password is seen by user
-                                        //Toast.makeText(getApplicationContext(), "see pass", Toast.LENGTH_SHORT).show();
-                                        Log.d("TAG","done seeing ");
+                        passwordField.setTransformationMethod(new AsteriskPasswordTransformationMethod());
+                        visible = false;
+                        see.setText(R.string.see_password);
+                        passwordField.setSelection(passwordField.getText().length());//this helps cursor to be at last position even if password is seen by user
+                        Log.d("TAG","done seeing ");
 
-                                }
-                            });
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
                         }
+                    });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-                    }
-                });
-                stop.start();
+                }
+            });
+            stop.start();
             }
         });
 
