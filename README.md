@@ -35,7 +35,7 @@
 3. To use this in XML File, use 
 
 ```XML
-  <com.android.nishchalraj.passwordstrength.PasswordStrengthBar
+  <com.android.thenishchalraj.passwordstrength.PasswordStrengthBar
         android:id="@+id/passwordBarCheck"
         android:layout_width="match_parent"
         android:layout_height="4dp"
