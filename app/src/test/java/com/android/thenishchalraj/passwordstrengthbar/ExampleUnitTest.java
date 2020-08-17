@@ -1,4 +1,4 @@
-package com.android.nishchalraj.passwordstrengthbar;
+package com.android.thenishchalraj.passwordstrengthbar;
 
 import org.junit.Test;
 

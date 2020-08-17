@@ -1,4 +1,4 @@
-package com.android.nishchalraj.passwordstrength;
+package com.android.thenishchalraj.passwordstrength;
 
 import org.junit.Test;
 

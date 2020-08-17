@@ -1,4 +1,4 @@
-package com.android.nishchalraj.passwordstrength;
+package com.android.thenishchalraj.passwordstrength;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

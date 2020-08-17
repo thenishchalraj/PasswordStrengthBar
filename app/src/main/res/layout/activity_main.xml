@@ -20,7 +20,7 @@
         android:layout_marginStart="18dp"
         android:layout_marginEnd="18dp"/>
 
-    <com.android.nishchalraj.passwordstrength.PasswordStrengthBar
+    <com.android.thenishchalraj.passwordstrength.PasswordStrengthBar
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:id="@+id/passwordBarCheck"

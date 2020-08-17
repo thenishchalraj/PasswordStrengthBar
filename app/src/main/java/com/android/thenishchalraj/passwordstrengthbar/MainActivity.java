@@ -1,4 +1,4 @@
-package com.android.nishchalraj.passwordstrengthbar;
+package com.android.thenishchalraj.passwordstrengthbar;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.nishchalraj.passwordstrength.PasswordStrengthBar;
+import com.android.thenishchalraj.passwordstrength.PasswordStrengthBar;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.android.nishchalraj.passwordstrength;
+package com.android.thenishchalraj.passwordstrength;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 /**
- * Created by nishchalraj on 10.10.2018.
+ * Created by thenishchalraj on 10.10.2018.
  */
 
 public class PasswordStrengthBar extends LinearLayout{

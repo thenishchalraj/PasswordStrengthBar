@@ -1,4 +1,4 @@
-package com.android.nishchalraj.passwordstrengthbar;
+package com.android.thenishchalraj.passwordstrengthbar;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
