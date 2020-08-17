@@ -2,7 +2,7 @@
 
 ### See the strength of your password through separated strength bars
 
-<img src="https://img.shields.io/badge/Version-1.1.5-green" /> <img src="https://img.shields.io/badge/License-Apache%202.0-blue" />
+<img src="https://img.shields.io/badge/Version-1.2.0-green" /> <img src="https://img.shields.io/badge/License-Apache%202.0-blue" />
 
 ## Preview of PasswordStrengthBar
 <img src="https://github.com/nishchalraj/PasswordStrengthBar/blob/master/screenshots/0.png" height="300em" />&nbsp;<img src="https://github.com/nishchalraj/PasswordStrengthBar/blob/master/screenshots/1.png" height="300em" />&nbsp;<img src="https://github.com/nishchalraj/PasswordStrengthBar/blob/master/screenshots/2.png" height="300em" />&nbsp;<img src="https://github.com/nishchalraj/PasswordStrengthBar/blob/master/screenshots/3.png" height="300em" />&nbsp;<img src="https://github.com/nishchalraj/PasswordStrengthBar/blob/master/screenshots/4.png" height="300em" />
