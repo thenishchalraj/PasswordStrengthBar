@@ -3,6 +3,9 @@
 ### See the strength of your password through separated strength bars
 
 <img src="https://img.shields.io/badge/Version-1.2.0-green" /> <img src="https://img.shields.io/badge/License-Apache%202.0-blue" />
+<br/><a href="https://www.linkedin.com/in/thenishchalraj/">
+    <img src="https://img.shields.io/badge/Support-Recommed%2FEndorse%20me%20on%20Linkedin-yellow?style=for-the-badge&logo=linkedin" alt="Recommend me on LinkedIn" /></a>
+
 
 ## Preview of PasswordStrengthBar
 <img src="https://github.com/nishchalraj/PasswordStrengthBar/blob/master/screenshots/0.png" height="300em" />&nbsp;<img src="https://github.com/nishchalraj/PasswordStrengthBar/blob/master/screenshots/1.png" height="300em" />&nbsp;<img src="https://github.com/nishchalraj/PasswordStrengthBar/blob/master/screenshots/2.png" height="300em" />&nbsp;<img src="https://github.com/nishchalraj/PasswordStrengthBar/blob/master/screenshots/3.png" height="300em" />&nbsp;<img src="https://github.com/nishchalraj/PasswordStrengthBar/blob/master/screenshots/4.png" height="300em" />
