@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="shirt_view">
+        <attr name="leftfset" format="boolean"/>
+        <attr name="rightfset" format="boolean"/>
+        <attr name="middlefset" format="boolean"/>
+        <attr name="backbset" format="boolean"/>
+        <attr name="downbset" format="boolean"/>
+        <attr name="midbox" format="string"/>
+        <attr name="lbox" format="string"/>
+        <attr name="rbox" format="string"/>
+        <attr name="shirt_pic" format="reference"/>
+        <attr name="linkedId" format="integer"/>
+    </declare-styleable>
+    <declare-styleable name="PlaneCanvasView">
+        <attr name="strokesize" format="integer"/>
+        <attr name="showtextview" format="boolean"/>
+
+    </declare-styleable>
+
+</resources>
