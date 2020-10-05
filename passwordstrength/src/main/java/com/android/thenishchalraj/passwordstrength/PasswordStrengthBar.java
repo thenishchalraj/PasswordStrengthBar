@@ -124,7 +124,6 @@ public class PasswordStrengthBar extends LinearLayout{
     private void setCustomBarViews(){
         shouldUseCustomBars =true;
         setupStrengthColors(passBarsNum);
-        defaultBarColor = Color.DKGRAY;
         this.invalidate();
     }
 
