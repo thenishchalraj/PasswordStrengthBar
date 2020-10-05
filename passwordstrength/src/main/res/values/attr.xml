@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="shirt_view">
-        <attr name="leftfset" format="boolean"/>
-        <attr name="rightfset" format="boolean"/>
-        <attr name="middlefset" format="boolean"/>
-        <attr name="backbset" format="boolean"/>
-        <attr name="downbset" format="boolean"/>
-        <attr name="midbox" format="string"/>
-        <attr name="lbox" format="string"/>
-        <attr name="rbox" format="string"/>
-        <attr name="shirt_pic" format="reference"/>
-        <attr name="linkedId" format="integer"/>
-    </declare-styleable>
-    <declare-styleable name="PlaneCanvasView">
-        <attr name="strokesize" format="integer"/>
-        <attr name="showtextview" format="boolean"/>
+    <declare-styleable name="clock_view">
+        <attr name="useSystemTime" format="boolean"/>
+        <attr name="hours" format="integer"/>
+        <attr name="minutes" format="integer"/>
+        <attr name="secs" format="integer"/>
+        <attr name="clockStroke" format="dimension"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="clockColor" format="color" />
+        <attr name="textColor" format="color" />
+        <attr name="clockBackColor" format="color"/>
 
     </declare-styleable>
+    <declare-styleable name="password_strength">
+        <attr name="maxProgress" format="integer"/>
+        <attr name="minProgress" format="integer"/>
+        <attr name="bars" format="integer"/>
+        <attr name="strength" format="integer"/>
+        <attr name="defColor" format="color"/>
 
+    </declare-styleable>
 </resources>
