@@ -2,13 +2,16 @@ package com.android.thenishchalraj.passwordstrength;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ScaleDrawable;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -40,28 +43,95 @@ public class PasswordStrengthBar extends LinearLayout{
     private int mStrengthColor3 = Color.GREEN;
     private int mStrengthColor4 = Color.DKGRAY;
 
+    //New Attributes by AJIRI GUNN
+    private int passBarsNum;
+    private boolean shouldUseCustomBars;
+    private int strength;
+    private int defaultBarColor;
+    private int[] strenthColorsArray;
+
+    public int getPassBarsNum() {
+        return passBarsNum;
+    }
+
+    private void setPassBarsNum(int passBarsNum) {
+        this.passBarsNum = passBarsNum;
+        shouldUseCustomBars =true;
+    }
+
+    private void setupStrengthColors(int passBars) {
+        int r=255;
+        int g=0;
+        int b=0;
+        strenthColorsArray =new int[passBars];
+        double colorDiff=Math.floor(250/(Math.ceil(passBars/2)));//differences between colors
+
+        //START with RED. Increase GREEN component till mid-bar.REDUCE RED component.
+        for(int i=0;i<passBars;i++){
+            int newColor=Color.rgb(r,g,b);
+            strenthColorsArray[i]=newColor;
+            if(i>=Math.floor(passBars/2)) {//
+                r -= colorDiff;
+            }else{
+                g+=colorDiff;
+            }
+        }
+    }
+
+//
     public PasswordStrengthBar(Context context) {
         super(context,null);
-        init(context);
+        init(context, null);
     }
 
     public PasswordStrengthBar(Context context, AttributeSet attrs) {
         super(context, attrs,0);
-        init(context);
+        init(context,attrs);
     }
 
     public PasswordStrengthBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        init(context, attrs);
     }
 
     /**initiate views*/
-    protected void init(Context context){
+    protected void init(Context context, AttributeSet attrs){
         mInflater = LayoutInflater.from(context);
 
-        //load view from xml
-        View view = mInflater.inflate(R.layout.password_strength_bar,this,true);
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.password_strength, 0, 0);
+        try {
+            mMax=a.getInteger(R.styleable.password_strength_maxProgress,0);
+            mMin=a.getInteger(R.styleable.password_strength_minProgress,0);
+            passBarsNum =a.getInteger(R.styleable.password_strength_bars,0);
+            strength=a.getInteger(R.styleable.password_strength_strength,0);
+            defaultBarColor =a.getColor(R.styleable.password_strength_defColor,Color.GRAY);
+        } finally {
+            a.recycle();
+        }
 
+        if(passBarsNum ==0){
+            setDefaultViews();
+        }else {
+            setCustomBarViews();
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setMinStrength(mMin);
+            setMaxStrength(mMax);
+        }
+    }
+
+    private void setCustomBarViews(){
+        shouldUseCustomBars =true;
+        setupStrengthColors(passBarsNum);
+        defaultBarColor = Color.DKGRAY;
+        this.invalidate();
+    }
+
+    private void setDefaultViews(){
+        //        load view from xml
+        shouldUseCustomBars =false;
+        View view = mInflater.inflate(R.layout.password_strength_bar,this,true);
         //init UI
         plb = view.findViewById(R.id.progressLinearBar);
         pb1 = view.findViewById(R.id.pBar1);
@@ -69,12 +139,66 @@ public class PasswordStrengthBar extends LinearLayout{
         pb3 = view.findViewById(R.id.pBar3);
         pb4 = view.findViewById(R.id.pBar4);
         setMaxStrength(mMax);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            setMinStrength(mMin);
-        }
-
+        setMinStrength(mMin);
+        setStrength(strength);
     }
 
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+        if(!shouldUseCustomBars){
+            return;
+        }
+        float width=getWidth();
+        float height=getHeight();
+        float rectRadius=getHeight()/2;
+        float percentPerBar=mMax/ passBarsNum;
+
+        float barWidth=((100-0.01f* passBarsNum)*width)/(100* passBarsNum);
+        float left= (float) (0.001*width);
+        float top= (float) (height*0.01);
+        float bottom=(float) (height*0.99);
+        float right=left+barWidth;
+
+        for(int i = 1; i<= passBarsNum; i++){
+
+            if (i*percentPerBar<=strength || i*percentPerBar<=mMin) {
+                //Draw a fully colored curved bar
+                drawCurvedBar(canvas,left,top,right,bottom,rectRadius,strenthColorsArray[i-1]);
+
+            } else if(i*percentPerBar>=strength &&(i-1)*percentPerBar<strength ) {
+
+                float percentProgress=(strength-(i-1)*percentPerBar)/100;
+                float tempRight=percentProgress*barWidth+left;
+                //Draw colored part of progressBar
+                drawBar(canvas,left,top,tempRight,bottom,strenthColorsArray[i-1]);
+                //Draw neutral part of progressBar
+                drawBar(canvas,tempRight,top,right,bottom,defaultBarColor);
+            }else{
+                //Draw a neutral colored curved bar
+                drawCurvedBar(canvas,left,top,right,bottom,rectRadius,defaultBarColor);
+            }
+            left= (float) (right+(0.001*width));
+            right=left+barWidth;
+        }
+    }
+
+    private void drawCurvedBar(Canvas canvas, float left, float top, float right, float bottom, float radius, int color){
+        Paint p=new Paint();
+        p.setStyle(Paint.Style.FILL);
+        p.setColor(color);
+        RectF f=new RectF(left,top,right,bottom);
+        canvas.drawRoundRect(f,radius,radius,p);
+    }
+
+    private void drawBar(Canvas canvas, float left, float top, float right, float bottom,  int color){
+        Paint p=new Paint();
+        p.setStyle(Paint.Style.FILL);
+        p.setColor(color);
+        RectF f=new RectF(left,top,right,bottom);
+        canvas.drawRect(f,p);
+    }
     /**
      * Implement the below method to set the password strength to default chosen color
      */
@@ -128,26 +252,28 @@ public class PasswordStrengthBar extends LinearLayout{
      * and minimum value to which the password strength can
      * be calculated
      */
-    public void setMaxStrength(int max){
+    public void setMaxStrength(int max) {
         this.mMax = max;
-
-        max /= 4;
-        pb1.setMax(max);
-        pb2.setMax(max);
-        pb3.setMax(max);
-        pb4.setMax(max);
+        if (!shouldUseCustomBars) {
+            max /= 4;
+            pb1.setMax(max);
+            pb2.setMax(max);
+            pb3.setMax(max);
+            pb4.setMax(max);
+        }
     }
 
     @SuppressLint("NewApi")
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void setMinStrength(int min){
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void setMinStrength(int min) {
         this.mMin = min;
-
-        min /=4;
-        pb1.setMin(min);
-        pb2.setMin(min);
-        pb3.setMin(min);
-        pb4.setMin(min);
+        if (!shouldUseCustomBars) {
+            min /= 4;
+            pb1.setMin(min);
+            pb2.setMin(min);
+            pb3.setMin(min);
+            pb4.setMin(min);
+        }
     }
 
 
@@ -155,7 +281,10 @@ public class PasswordStrengthBar extends LinearLayout{
      * implement the below method to get the strength of the bar
      */
     public int getStrength(){
-        return pb1.getProgress()+pb2.getProgress()+pb3.getProgress()+pb4.getProgress() ;
+        if(!shouldUseCustomBars)//IF new implementation isn't in effect
+            return pb1.getProgress()+pb2.getProgress()+pb3.getProgress()+pb4.getProgress() ;
+        else
+            return strength;
     }
 
 
@@ -164,6 +293,13 @@ public class PasswordStrengthBar extends LinearLayout{
      * Below method to set the strength of the bar
      */
     public void setStrength(int strength){
+        this.strength=strength;
+
+        if(shouldUseCustomBars){
+            this.invalidate();
+            return;
+        }
+
         if(strength <= mMin){
             //set all the progress bar to its minimum value
             pb1.setProgress(mMin/4);
