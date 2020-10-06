@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
@@ -16,6 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.thenishchalraj.passwordstrength.PasswordStrengthBar;
+import com.android.thenishchalraj.passwordstrengthbar.adapter.StrengthAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +36,14 @@ public class MainActivity extends AppCompatActivity {
     Button see;
 
     Boolean visible = true;
+
+    private StrengthAdapter strengthAdapter;
+    private List<String> strengthList=new ArrayList<>();
+    private EditText etNumberOfStrengthBar;
+    private Button btSave;
+    private RecyclerView rvStrengthBar;
+    private TextView tvSelectColor;
+    private int StrengthBarValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
 
         check = findViewById(R.id.strengthText);
         see = findViewById(R.id.visibilityButton);
+
+
+        etNumberOfStrengthBar = findViewById(R.id.etNumberOfStrengthBar);
+        btSave = findViewById(R.id.btSave);
+        rvStrengthBar = findViewById(R.id.rvStrengthBar);
+        tvSelectColor = findViewById(R.id.tvSelectColor);
 
         passwordStrengthBar.setStrengthColor(Color.LTGRAY, mColor1, mColor2, mColor3, mColor4);
 
@@ -103,6 +124,59 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        etNumberOfStrengthBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calculation(s.toString());
+                if (s.length() != 0) {
+                    strengthList.clear();
+                    btSave.setVisibility(View.VISIBLE);
+                    rvStrengthBar.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    btSave.setVisibility(View.GONE);
+                    tvSelectColor.setVisibility(View.GONE);
+                    rvStrengthBar.setVisibility(View.GONE);
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+
+        btSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etNumberOfStrengthBar.setVisibility(View.GONE);
+                btSave.setVisibility(View.GONE);
+                StrengthBarValue= Integer.parseInt(etNumberOfStrengthBar.getText().toString());
+
+                for (int i = 0; i <StrengthBarValue ; i++) {
+                    strengthList.add(String.valueOf(i));
+                }
+
+                setRecyclerView();
+            }
+        });
+
+
+    }
+
+    private void setRecyclerView() {
+        tvSelectColor.setVisibility(View.VISIBLE);
+
+        rvStrengthBar.setNestedScrollingEnabled(false);
+        rvStrengthBar.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL,false));
+
+        strengthAdapter = new StrengthAdapter(this, strengthList);
+        rvStrengthBar.setAdapter(strengthAdapter);
     }
 
     //the below method calculates the strength of the password and this can be different for different applications

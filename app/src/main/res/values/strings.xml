@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">PasswordStrengthBar</string>
     <string name="enter_password">Enter Password</string>
+    <string name="enter_strength_bar_length">Enter Number of Strength Bars</string>
     <string name="see_password">See Password</string>
+    <string name="save">Save</string>
     <string name="hide_password">Hide Password</string>
     <string name="bad">BAD</string>
     <string name="average">AVERAGE</string>
     <string name="good">GOOD</string>
     <string name="best">BEST</string>
+    <string name="select_color_for_each_strength_bar">Select color for each strength bar</string>
 </resources>
