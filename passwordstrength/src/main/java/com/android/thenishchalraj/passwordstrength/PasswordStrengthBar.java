@@ -13,8 +13,14 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by thenishchalraj on 10.10.2018.
@@ -24,11 +30,12 @@ public class PasswordStrengthBar extends LinearLayout{
 
     //UI
     protected LinearLayout plb;
+    protected HorizontalScrollView HorizontalProgressLinearBar;
     protected ProgressBar pb1;
     protected ProgressBar pb2;
     protected ProgressBar pb3;
     protected ProgressBar pb4;
-
+    ProgressBar progressBar;
     protected LayoutInflater mInflater;
 
     //Attributes
@@ -39,6 +46,12 @@ public class PasswordStrengthBar extends LinearLayout{
     private int mStrengthColor2 = Color.YELLOW;
     private int mStrengthColor3 = Color.GREEN;
     private int mStrengthColor4 = Color.DKGRAY;
+
+
+
+    List<StrengthBarModel2> strengthBarModelArrayList=new ArrayList<>();
+    List<ProgressBar> progressBarsList=new ArrayList<>();
+    int count =0;
 
     public PasswordStrengthBar(Context context) {
         super(context,null);
@@ -216,5 +229,54 @@ public class PasswordStrengthBar extends LinearLayout{
                 pb4.setProgress(mMin);
             }
         }
+    }
+
+    public void setStrengthBar(List<StrengthBarModel2> strengthBarModelArrayList, Context context, LinearLayout ll_dynamic) {
+
+        for( int i = 0; i < strengthBarModelArrayList.size(); i++ )
+        {
+            ProgressBar progressBar2 = new ProgressBar(context,null,
+                    android.R.attr.progressBarStyleHorizontal);
+
+            progressBar2.setPadding(5,0,5,0);
+
+            ll_dynamic.addView(progressBar2,230,5);
+            progressBarsList.add(progressBar2);
+            setMaxStrength2(mMax,progressBar2);
+            setStrengthColor2(progressBar2);
+        }
+    }
+
+    public void setMaxStrength2(int max, ProgressBar progressBar){
+        this.mMax = max;
+
+        max /= 4;
+        progressBar.setMax(max);
+    }
+
+    public void setStrengthColor2(ProgressBar progressBar2){
+        Drawable backgroundDr = new ColorDrawable(0);
+        for (int i = 0; i <strengthBarModelArrayList.size() ; i++) {
+            Drawable progressDr1 = new ScaleDrawable(new ColorDrawable(strengthBarModelArrayList.get(i).getColor()), Gravity.LEFT, 1, -1);
+            LayerDrawable resultDr1 = new LayerDrawable(new Drawable[] { backgroundDr, progressDr1 });
+            progressBar2.setProgressDrawable(resultDr1);
+        }
+    }
+
+
+
+    public void setStrength2(int strength){
+
+        if(strength <= mMin){
+            //set all the progress bar to its minimum value
+            progressBar.setProgress(mMin/4);
+
+        }
+        else if(strength >= mMax){
+            //set all the progress bar to its maximum value
+            progressBar.setProgress(mMax/4);
+
+        }
+
     }
 }

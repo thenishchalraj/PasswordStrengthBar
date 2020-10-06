@@ -6,7 +6,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,10 +15,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.thenishchalraj.passwordstrength.PasswordStrengthBar;
+import com.android.thenishchalraj.passwordstrength.StrengthBarModel2;
 import com.android.thenishchalraj.passwordstrengthbar.adapter.StrengthAdapter;
 
 
@@ -37,15 +38,18 @@ public class MainActivity extends AppCompatActivity {
     int mColor3 = 0;
     int mColor4 = 0;
     TextView check;
+    LinearLayout ll_dynamic;
     Button see;
 
     Boolean visible = true;
 
     private StrengthAdapter strengthAdapter;
     private List<String> strengthList=new ArrayList<>();
+    private List<StrengthBarModel2> strengthBarModelArrayList=new ArrayList<>();
     private EditText etNumberOfStrengthBar;
     private Button btSave;
     private RecyclerView rvStrengthBar;
+    private Button btSaveColors;
     private TextView tvSelectColor;
     private int StrengthBarValue;
 
@@ -64,12 +68,14 @@ public class MainActivity extends AppCompatActivity {
 
         check = findViewById(R.id.strengthText);
         see = findViewById(R.id.visibilityButton);
+        ll_dynamic = findViewById(R.id.ll_dynamic);
 
 
         etNumberOfStrengthBar = findViewById(R.id.etNumberOfStrengthBar);
         btSave = findViewById(R.id.btSave);
         rvStrengthBar = findViewById(R.id.rvStrengthBar);
         tvSelectColor = findViewById(R.id.tvSelectColor);
+        btSaveColors = findViewById(R.id.btSaveColors);
 
 
 
@@ -83,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 calculation(s.toString());
+                calculation2(s.toString());
                 if (s.length() != 0) {
                     see.setVisibility(View.VISIBLE);
                 } else {
@@ -140,15 +147,19 @@ public class MainActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 calculation(s.toString());
                 if (s.length() != 0) {
-                    strengthList.clear();
+                    //strengthList.clear();
+                    strengthBarModelArrayList.clear();
                     btSave.setVisibility(View.VISIBLE);
+                    btSaveColors.setVisibility(View.GONE);
                     rvStrengthBar.setVisibility(View.VISIBLE);
+
 
                 } else {
 
                     btSave.setVisibility(View.GONE);
                     tvSelectColor.setVisibility(View.GONE);
                     rvStrengthBar.setVisibility(View.GONE);
+                    btSaveColors.setVisibility(View.VISIBLE);
 
                 }
             }
@@ -166,10 +177,24 @@ public class MainActivity extends AppCompatActivity {
                 StrengthBarValue= Integer.parseInt(etNumberOfStrengthBar.getText().toString());
 
                 for (int i = 0; i <StrengthBarValue ; i++) {
-                    strengthList.add(String.valueOf(i));
+                   // strengthList.add(String.valueOf(i));
+                    StrengthBarModel2 strengthBarModel=new StrengthBarModel2();
+                    strengthBarModel.setColor(0);
+                    strengthBarModel.setStrengthBar(i);
+
+                    strengthBarModelArrayList.add(strengthBarModel);
                 }
 
                 setRecyclerView();
+            }
+        });
+
+
+        btSaveColors.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                passwordStrengthBar.setStrengthBar(strengthBarModelArrayList,MainActivity.this,ll_dynamic);
+               // passwordStrengthBar.setStrengthColor2(strengthBarModelArrayList);
             }
         });
 
@@ -178,22 +203,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void setRecyclerView() {
         tvSelectColor.setVisibility(View.VISIBLE);
-
+        btSaveColors.setVisibility(View.VISIBLE);
         rvStrengthBar.setNestedScrollingEnabled(false);
         rvStrengthBar.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL,false));
 
-        strengthAdapter = new StrengthAdapter(this, strengthList);
+        strengthAdapter = new StrengthAdapter(this, strengthBarModelArrayList);
         rvStrengthBar.setAdapter(strengthAdapter);
 
         strengthAdapter.setColor(new StrengthAdapter.ChangeColor() {
             @Override
-            public void setColor(final ImageView ivColor, int i) {
+            public void setColor(final ImageView ivColor, final int i) {
                 AmbilWarnaDialog dialog = new AmbilWarnaDialog(MainActivity.this, 0, false, new AmbilWarnaDialog.OnAmbilWarnaListener() {
                     @Override
                     public void onOk(AmbilWarnaDialog dialog, int color) {
                         Toast.makeText(getApplicationContext(), "ok", Toast.LENGTH_SHORT).show();
 
                         displayColor(color,ivColor);
+                        strengthBarModelArrayList.get(i).setColor(color);
                     }
 
                     @Override
@@ -210,9 +236,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    void openDialog(boolean supportsAlpha) {
 
-    }
+
 
     void displayColor(int color, ImageView ivColor) {
         ivColor.setBackgroundColor(color);
@@ -337,6 +362,130 @@ public class MainActivity extends AppCompatActivity {
         } else {
             check.setText("");
             passwordStrengthBar.setStrength(passwordStrengthBar.getMinStrength());
+        }
+
+    }
+
+
+
+    protected void calculation2(String data) {
+
+        int length = 0, uppercase = 0, lowercase = 0, digits = 0, symbols = 0, bonus = 0, requirements = 0;
+
+        int lettersOnly = 0, numbersOnly = 0, cuc = 0, clc = 0;
+
+        length = data.length();
+        for (int i = 0; i < data.length(); i++) {
+            if (Character.isUpperCase(data.charAt(i)))
+                uppercase++;
+            else if (Character.isLowerCase(data.charAt(i)))
+                lowercase++;
+            else if (Character.isDigit(data.charAt(i)))
+                digits++;
+
+            symbols = length - uppercase - lowercase - digits;
+
+        }
+
+        for (int j = 1; j < data.length() - 1; j++) {
+
+            if (Character.isDigit(data.charAt(j)))
+                bonus++;
+
+        }
+
+        for (int k = 0; k < data.length(); k++) {
+
+            if (Character.isUpperCase(data.charAt(k))) {
+                k++;
+
+                if (k < data.length()) {
+
+                    if (Character.isUpperCase(data.charAt(k))) {
+
+                        cuc++;
+                        k--;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        for (int l = 0; l < data.length(); l++) {
+
+            if (Character.isLowerCase(data.charAt(l))) {
+                l++;
+
+                if (l < data.length()) {
+
+                    if (Character.isLowerCase(data.charAt(l))) {
+
+                        clc++;
+                        l--;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        if (length > 7) {
+            requirements++;
+        }
+
+        if (uppercase > 0) {
+            requirements++;
+        }
+
+        if (lowercase > 0) {
+            requirements++;
+        }
+
+        if (digits > 0) {
+            requirements++;
+        }
+
+        if (symbols > 0) {
+            requirements++;
+        }
+
+        if (bonus > 0) {
+            requirements++;
+        }
+
+        if (digits == 0 && symbols == 0) {
+            lettersOnly = 1;
+        }
+
+        if (lowercase == 0 && uppercase == 0 && symbols == 0) {
+            numbersOnly = 1;
+        }
+
+        int Total = (length * 4) + ((length - uppercase) * 2)
+                + ((length - lowercase) * 2) + (digits * 4) + (symbols * 6)
+                + (bonus * 2) + (requirements * 2) - (lettersOnly * length * 2)
+                - (numbersOnly * length * 3) - (cuc * 2) - (clc * 2);
+
+        if (Total >= 1 && Total <= 50) {
+            check.setText(R.string.bad);
+            passwordStrengthBar.setStrength2(Total/2);
+        } else if (Total >= 51 && Total <= 70) {
+            check.setText(R.string.average);
+            passwordStrengthBar.setStrength2((Total*5)/7);
+        } else if (Total >= 71 && Total <= 80) {
+            check.setText(R.string.good);
+            passwordStrengthBar.setStrength2((Total*7)/8);
+        } else if (Total >= 81) {
+            check.setText(R.string.best);
+            passwordStrengthBar.setStrength2(Total);
+        } else {
+            check.setText("");
+            passwordStrengthBar.setStrength2(passwordStrengthBar.getMinStrength());
         }
 
     }

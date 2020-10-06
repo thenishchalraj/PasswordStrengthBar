@@ -7,22 +7,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.android.thenishchalraj.passwordstrength.StrengthBarModel2;
 import com.android.thenishchalraj.passwordstrengthbar.R;
-import com.android.thenishchalraj.passwordstrengthbar.model.StrengthBarModel;
+import com.android.thenishchalraj.passwordstrengthbar.StrengthBarModel;
 
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class StrengthAdapter extends RecyclerView.Adapter<StrengthAdapter.MyViewHolder> {
     Context context;
     View view;
-    List<String> list;
+    //List<String> list;
+    List<StrengthBarModel2> list;
     ChangeColor  changeColor;
 
-    public StrengthAdapter(Context context, List<String> list) {
+    public StrengthAdapter(Context context, List<StrengthBarModel2> list) {
         this.context = context;
         this.list = list;
     }

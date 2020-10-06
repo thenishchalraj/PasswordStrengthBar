@@ -30,8 +30,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
 
-    //circle image view
-    implementation 'de.hdodenhof:circleimageview:3.0.1'
+
     implementation 'com.github.yukuku:ambilwarna:2.0.1'
 
 }
