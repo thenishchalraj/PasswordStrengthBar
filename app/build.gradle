@@ -32,4 +32,6 @@ dependencies {
 
     //circle image view
     implementation 'de.hdodenhof:circleimageview:3.0.1'
+    implementation 'com.github.yukuku:ambilwarna:2.0.1'
+
 }

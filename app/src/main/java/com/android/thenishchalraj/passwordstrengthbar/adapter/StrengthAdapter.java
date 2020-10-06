@@ -20,6 +20,7 @@ public class StrengthAdapter extends RecyclerView.Adapter<StrengthAdapter.MyView
     Context context;
     View view;
     List<String> list;
+    ChangeColor  changeColor;
 
     public StrengthAdapter(Context context, List<String> list) {
         this.context = context;
@@ -39,7 +40,13 @@ public class StrengthAdapter extends RecyclerView.Adapter<StrengthAdapter.MyView
         setClick(myViewHolder,i);
     }
 
-    private void setClick(MyViewHolder myViewHolder, int i) {
+    private void setClick(final MyViewHolder myViewHolder, final int i) {
+        myViewHolder.ivColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeColor.setColor(myViewHolder.ivColor,i);
+            }
+        });
     }
 
     @Override
@@ -54,5 +61,15 @@ public class StrengthAdapter extends RecyclerView.Adapter<StrengthAdapter.MyView
             super(itemView);
             ivColor = (ImageView) itemView.findViewById(R.id.ivColor);
         }
+    }
+
+    public interface ChangeColor{
+
+        void setColor(ImageView ivColor, int i);
+    }
+
+    public void setColor(ChangeColor changeColor)
+    {
+        this.changeColor=changeColor;
     }
 }

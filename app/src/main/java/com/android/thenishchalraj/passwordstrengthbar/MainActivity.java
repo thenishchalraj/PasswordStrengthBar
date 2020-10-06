@@ -15,14 +15,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.thenishchalraj.passwordstrength.PasswordStrengthBar;
 import com.android.thenishchalraj.passwordstrengthbar.adapter.StrengthAdapter;
 
+
 import java.util.ArrayList;
 import java.util.List;
+
+import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
         btSave = findViewById(R.id.btSave);
         rvStrengthBar = findViewById(R.id.rvStrengthBar);
         tvSelectColor = findViewById(R.id.tvSelectColor);
+
+
+
 
         passwordStrengthBar.setStrengthColor(Color.LTGRAY, mColor1, mColor2, mColor3, mColor4);
 
@@ -177,8 +184,39 @@ public class MainActivity extends AppCompatActivity {
 
         strengthAdapter = new StrengthAdapter(this, strengthList);
         rvStrengthBar.setAdapter(strengthAdapter);
+
+        strengthAdapter.setColor(new StrengthAdapter.ChangeColor() {
+            @Override
+            public void setColor(final ImageView ivColor, int i) {
+                AmbilWarnaDialog dialog = new AmbilWarnaDialog(MainActivity.this, 0, false, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+                    @Override
+                    public void onOk(AmbilWarnaDialog dialog, int color) {
+                        Toast.makeText(getApplicationContext(), "ok", Toast.LENGTH_SHORT).show();
+
+                        displayColor(color,ivColor);
+                    }
+
+                    @Override
+                    public void onCancel(AmbilWarnaDialog dialog) {
+                        Toast.makeText(getApplicationContext(), "cancel", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                dialog.show();
+
+
+
+            }
+        });
     }
 
+
+    void openDialog(boolean supportsAlpha) {
+
+    }
+
+    void displayColor(int color, ImageView ivColor) {
+        ivColor.setBackgroundColor(color);
+    }
     //the below method calculates the strength of the password and this can be different for different applications
     @SuppressLint("ResourceAsColor")
     protected void calculation(String data) {
@@ -324,4 +362,8 @@ class AsteriskPasswordTransformationMethod extends PasswordTransformationMethod 
             return mSource.subSequence(start, end);
         }
     }
+
+
+
 };
+
