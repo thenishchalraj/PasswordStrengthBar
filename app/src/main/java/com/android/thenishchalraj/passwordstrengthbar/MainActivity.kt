@@ -107,10 +107,9 @@ class MainActivity : AppCompatActivity() {
                         symbols = length - uppercase - lowercase - digits
                 }
 
-                for (j in 1 until data.length - 1) {
+                for (j in 1 until data.length - 1)
                         if (Character.isDigit(data[j]))
                                 bonus++
-                }
 
                 var k = 0
                 while (k < data.length) {
