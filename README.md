@@ -73,4 +73,6 @@
 Follow [this](https://medium.com/mindorks/want-to-write-your-first-android-library-7bba6ca4e0c5) medium link and start today.
 
 ### Contributing to PasswordStrengthBar
-Fork and make your changes/improvements. All pull requests are welcome.
+Fork and make your changes/improvements.
+All pull requests are welcome in the dev branch.
+Note: do not send requests directly to master.
