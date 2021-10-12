@@ -1,8 +1,12 @@
-<img src="https://github.com/thenishchalraj/PasswordStrengthBar/blob/master/psb_image.png" />
+<div>
+	<img src="https://github.com/thenishchalraj/PasswordStrengthBar/blob/master/psb_image.png" />
+</div>
+
+# Password Strength Bar
 
 ### See the strength of your password through separated strength bars
 
-<img src="https://img.shields.io/badge/Version-1.2.0-green" /> <img src="https://img.shields.io/badge/License-Apache%202.0-blue" />
+<img src="https://img.shields.io/badge/Version-2.0.0-green" /> <img src="https://img.shields.io/badge/License-Apache%202.0-blue" />
 <br/><a href="https://www.linkedin.com/in/thenishchalraj/">
     <img src="https://img.shields.io/badge/Support-Recommed%2FEndorse%20me%20on%20Linkedin-yellow?style=for-the-badge&logo=linkedin" alt="Recommend me on LinkedIn" /></a>
 
