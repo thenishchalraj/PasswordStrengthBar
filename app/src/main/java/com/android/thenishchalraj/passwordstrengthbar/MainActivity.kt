@@ -12,14 +12,15 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import com.android.thenishchalraj.passwordstrength.PasswordStrengthBar
+import com.android.thenishchalraj.passwordstrengthbar.databinding.ActivityMainBinding
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-        private lateinit var passwordStrengthBar: PasswordStrengthBar
-        private lateinit var passwordField: EditText
-        private lateinit var check: TextView
-        private lateinit var see: Button
+        private lateinit var mBinding: ActivityMainBinding
+
         private var mColor1 = 0
         private var mColor2 = 0
         private var mColor3 = 0
@@ -28,62 +29,67 @@ class MainActivity : AppCompatActivity() {
 
         override fun onCreate(savedInstanceState: Bundle?) {
                 super.onCreate(savedInstanceState)
-                setContentView(R.layout.activity_main)
 
+                mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+                setUI()
+                setListeners()
+        }
+
+        private fun setUI() {
                 mColor1 = ContextCompat.getColor(this, R.color.colorRed)
                 mColor2 = ContextCompat.getColor(this, R.color.colorOrange)
                 mColor3 = ContextCompat.getColor(this, R.color.colorLightGreen)
                 mColor4 = ContextCompat.getColor(this, R.color.colorDarkGreen)
 
-                passwordStrengthBar = findViewById(R.id.passwordBarCheck)
-                passwordField = findViewById(R.id.passwordFieldCheck)
-                check = findViewById(R.id.strengthText)
-                see = findViewById(R.id.visibilityButton)
+                mBinding.passwordBar.setStrengthColor(Color.LTGRAY, mColor1, mColor2, mColor3, mColor4)
 
-                passwordStrengthBar.setStrengthColor(Color.LTGRAY, mColor1, mColor2, mColor3, mColor4)
+        }
 
-                passwordField.addTextChangedListener(object : TextWatcher {
+        private fun setListeners() {
+
+                mBinding.editTextPasswordField.addTextChangedListener(object : TextWatcher {
 
                         override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
 
                         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
 
                                 calculation(s.toString())
-                                see.visibility = if (s.isNotBlank()) View.VISIBLE else View.GONE
+                                mBinding.buttonPassword.visibility = if (s.isNotBlank()) View.VISIBLE else View.GONE
                         }
 
                         override fun afterTextChanged(editable: Editable) {}
                 })
 
-                see.setOnClickListener(View.OnClickListener {
+                mBinding.buttonPassword.setOnClickListener {
 
                         //this hole onclick func make password visible for 1.5second only
-                        passwordField.transformationMethod = null
+                        mBinding.editTextPasswordField.transformationMethod = null
                         shown = true
-                        see.setText(R.string.hide_password)
-                        passwordField.setSelection(passwordField.text.length) //this helps cursor to be at last position even if password is seen by user
+                        mBinding.buttonPassword.setText(R.string.hide_password)
+                        mBinding.editTextPasswordField.setSelection(mBinding.editTextPasswordField.text!!.length) //this helps cursor to be at last position even if password is seen by user
 
                         val stop = Thread {
-                                        try {
-                                                Thread.sleep(1500)
-                                                runOnUiThread {
-                                                        passwordField.transformationMethod = AsteriskPasswordTransformationMethod()
-                                                        shown = false
-                                                        see.setText(R.string.see_password)
-                                                        passwordField.setSelection(passwordField.text.length) //this helps cursor to be at last position even if password is seen by user
-                                                         }
-                                        } catch (e: InterruptedException) {
-                                                e.printStackTrace()
+                                try {
+                                        Thread.sleep(1500)
+                                        runOnUiThread {
+                                                mBinding.editTextPasswordField.transformationMethod =
+                                                        AsteriskPasswordTransformationMethod()
+                                                shown = false
+                                                mBinding.buttonPassword.setText(R.string.see_password)
+                                                mBinding.editTextPasswordField.setSelection(mBinding.editTextPasswordField.text!!.length) //this helps cursor to be at last position even if password is seen by user
                                         }
+                                } catch (e: InterruptedException) {
+                                        e.printStackTrace()
+                                }
                         }
                         stop.start()
-                })
+                }
         }
 
         //the below method calculates the strength of the password and this can be different for different applications
         @SuppressLint("ResourceAsColor")
         private fun calculation(data: String) {
-                var length = 0
                 var uppercase = 0
                 var lowercase = 0
                 var digits = 0
@@ -95,7 +101,7 @@ class MainActivity : AppCompatActivity() {
                 var cuc = 0
                 var clc = 0
 
-                length = data.length
+                val length: Int = data.length
 
                 for (i in data.indices) {
                         when {
@@ -114,12 +120,11 @@ class MainActivity : AppCompatActivity() {
                 while (k < data.length) {
                         if (Character.isUpperCase(data[k])) {
                                 k++
-                                if (k < data.length) {
+                                if (k < data.length)
                                         if (Character.isUpperCase(data[k])) {
                                                 cuc++
                                                 k--
                                         }
-                                }
                         }
                         k++
                 }
@@ -128,12 +133,11 @@ class MainActivity : AppCompatActivity() {
                 while (l < data.length) {
                         if (Character.isLowerCase(data[l])) {
                                 l++
-                                if (l < data.length) {
+                                if (l < data.length)
                                         if (Character.isLowerCase(data[l])) {
                                                 clc++
                                                 l--
                                         }
-                                }
                         }
                         l++
                 }
@@ -161,24 +165,24 @@ class MainActivity : AppCompatActivity() {
 
                 when {
                         total in 1..50 -> {
-                                check.setText(R.string.bad)
-                                passwordStrengthBar.strength = total / 2
+                                mBinding.textViewPasswordStrength.setText(R.string.bad)
+                                mBinding.passwordBar.strength = total / 2
                         }
                         total in 51..70 -> {
-                                check.setText(R.string.average)
-                                passwordStrengthBar.strength = total * 5 / 7
+                                mBinding.textViewPasswordStrength.setText(R.string.average)
+                                mBinding.passwordBar.strength = total * 5 / 7
                         }
                         total in 71..80 -> {
-                                check.setText(R.string.good)
-                                passwordStrengthBar.strength = total * 7 / 8
+                                mBinding.textViewPasswordStrength.setText(R.string.good)
+                                mBinding.passwordBar.strength = total * 7 / 8
                         }
                         total >= 81 -> {
-                                check.setText(R.string.best)
-                                passwordStrengthBar.strength = total
+                                mBinding.textViewPasswordStrength.setText(R.string.best)
+                                mBinding.passwordBar.strength = total
                         }
                         else -> {
-                                check.text = ""
-                                passwordStrengthBar.strength = passwordStrengthBar.minStrength
+                                mBinding.textViewPasswordStrength.text = ""
+                                mBinding.passwordBar.strength = mBinding.passwordBar.minStrength
                         }
                 }
         }
